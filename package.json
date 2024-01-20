@@ -6,7 +6,12 @@
   "scripts": {
     "build": "tsc",
     "start": "nodemon --exec ts-node src/main.ts",
-    "dockerize": "docker-compose -f docker/docker-compose.yml up -d"
+    "docker:up": "docker-compose -f docker/docker-compose.n8n.yml -f docker/docker-compose.node.yml up -d",
+    "docker:down": "docker-compose -f docker/docker-compose.n8n.yml -f docker/docker-compose.node.yml down",
+    "n8n:up": "docker-compose -f docker/docker-compose.n8n.yml up -d",
+    "n8n:stop": "docker-compose -f docker/docker-compose.n8n.yml stop",
+    "node:up": "docker-compose -f docker/docker-compose.node.yml up -d",
+    "node:stop": "docker-compose -f docker/docker-compose.node.yml stop"
   },
   "author": "",
   "license": "ISC",

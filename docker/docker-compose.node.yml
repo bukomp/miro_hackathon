@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  node_backend:
+    image: node:20.11.0-alpine
+    build:
+      context: ..
+      dockerfile: ./docker/node/Dockerfile
+    environment:
+      - NODE_ENV=production
+      - PORT=4000
+    ports:
+      - "3000:4000"
+#   restart: unless-stopped

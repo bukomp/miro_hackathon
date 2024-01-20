@@ -9,7 +9,7 @@ const sdk = require("api")("@miro-ea/v2.0#3on7qglqcdtn73");
  * @param boardId Id of the board
  * @param parentId Optional id of the parent node
  */
-export const createMindMapNode = async (
+export const createFlowchartNode = async (
   accessToken: string,
   nodeText: string,
   boardId: string,
@@ -27,7 +27,7 @@ export const createMindMapNode = async (
   console.log("DATA", data);
 
   const node = await sdk
-    .createMindmapNodesExperimental(data[0], data[1])
+    .createShapeItemFlowchart(data[0], data[1])
     .then((res: any) => {
       return res.data;
     })
@@ -44,9 +44,8 @@ const getNodeOptions = (
   return [
     {
       data: {
-        nodeView: {
-          data: { type: "text", content: nodeText }
-        }
+        content: nodeText,
+        shape: "rectangle"
       },
       position: { x: xPos, y: yPos }
     },
@@ -64,9 +63,8 @@ const getNodeOptionsWithParent = (
   return [
     {
       data: {
-        nodeView: {
-          data: { type: "text", content: nodeText }
-        }
+        content: nodeText,
+        shape: "round_rectangle"
       },
       position: { x: xPos, y: yPos },
       parent: { id: parentId }
@@ -80,7 +78,7 @@ const rootX = 1000; // X coordinate of the root node
 const rootY = 1000; // Y coordinate of the root node
 const spacing = 100; // Spacing between levels
 
-export const processNode = async (
+export const processFlowchartNode = async (
   node: MindMapNode,
   accessToken: string,
   boardId: string,
@@ -95,7 +93,7 @@ export const processNode = async (
   node.y = rootY + level * spacing * Math.sin(angle);
 
   if (!parentId) {
-    newNode = await createMindMapNode(
+    newNode = await createFlowchartNode(
       accessToken,
       node.content,
       boardId,
@@ -104,7 +102,7 @@ export const processNode = async (
       Math.round(node.y)
     );
   } else
-    newNode = await createMindMapNode(
+    newNode = await createFlowchartNode(
       accessToken,
       node.content,
       boardId,
@@ -121,13 +119,12 @@ export const processNode = async (
   for (let i = 0; i < childCount; i++) {
     // Calculate angle for each child
     const childAngle = baseAngle + ((2 * Math.PI) / childCount) * i;
-    await processNode(
+    await processFlowchartNode(
       node.children[i],
       accessToken,
       boardId,
       childAngle,
-      level + 1,
-      node.id
+      level + 1
     );
   }
 };

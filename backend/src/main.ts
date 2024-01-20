@@ -1,8 +1,10 @@
-import { createMindMapNode } from "./miro/mindMapper2";
+import { mockData } from "./utils/mockData";
+import { createMindMapNode, processNode } from "./miro/mindMapper2";
 import axios from "axios";
 import express from "express";
 import { getEnvOrDefault, getEnvOrThrow } from "./utils/config";
 import { grabToken } from "./miro/getToken";
+import { processFlowchartNode } from "./miro/flowCharter";
 
 const app = express();
 
@@ -18,6 +20,48 @@ app.get("/", async (req, res) => {
       "3458764576268498045"
     );
     console.log(node);
+
+    res.sendStatus(201);
+  } else {
+    await grabToken(req, res);
+  }
+});
+
+app.get("/tree", async (req, res) => {
+  //await grabToken(req, res);
+  const token = getEnvOrDefault("TEMPTOKEN", "");
+
+  if (token != "") {
+    const data = mockData;
+    const response = processNode(
+      data,
+      token,
+      getEnvOrThrow("MIRO_BOARD_ID"),
+      0,
+      0,
+      data.id
+    );
+
+    res.sendStatus(201);
+  } else {
+    await grabToken(req, res);
+  }
+});
+
+app.get("/flow", async (req, res) => {
+  //await grabToken(req, res);
+  const token = getEnvOrDefault("TEMPTOKEN", "");
+
+  if (token != "") {
+    const data = mockData;
+    const response = processFlowchartNode(
+      data,
+      token,
+      getEnvOrThrow("MIRO_BOARD_ID"),
+      0,
+      0,
+      data.id
+    );
 
     res.sendStatus(201);
   } else {

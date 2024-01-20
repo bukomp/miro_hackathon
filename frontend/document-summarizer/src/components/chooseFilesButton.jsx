@@ -5,6 +5,8 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Tooltip from '@mui/material/Tooltip';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { styled } from '@mui/material/styles';
 import axios from 'axios';
 
@@ -86,8 +88,18 @@ const FileUploadButton = () => {
   };
 
   return (
-    <Paper elevation={3} sx={{ p: 4, maxWidth: 400, mx: 'auto' }}>
-      <label htmlFor="fileInput">
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: '20px',
+      }}
+    >
+      <label
+        htmlFor="fileInput"
+        style={{ display: 'flex', alignItems: 'center' }}
+      >
         <Input
           accept="*"
           id="fileInput"
@@ -99,13 +111,26 @@ const FileUploadButton = () => {
           variant="contained"
           color="secondary"
           component="span"
-          size="small"
+          size="large" // Makes the button larger
+          style={{
+            minWidth: '200px', // Adjust width as needed
+            padding: '10px 30px', // Adjust padding for a bigger button size
+          }}
         >
           Choose Files
         </Button>
       </label>
+      <Tooltip
+        title="Choose files to upload. Multiple files can be chosen. :)"
+        placement="top"
+        arrow
+      >
+        <IconButton>
+          <HelpOutlineIcon color="action" />
+        </IconButton>
+      </Tooltip>
       {fileData()}
-    </Paper>
+    </div>
   );
 };
 

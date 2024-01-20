@@ -74,7 +74,32 @@ const FileUploadButton = () => {
           Make your life easier
         </Button>
       </>
-    ) : null;
+    ) : (
+      <Box
+        sx={{
+          mt: 2,
+          p: 2,
+          border: '1px dashed grey',
+          width: '90%',
+          backgroundColor: '#f5f5f5',
+        }}
+      >
+        <Typography
+          variant="subtitle1"
+          gutterBottom
+          style={{ marginBottom: '30px' }}
+        >
+          NO NEED TO READ BORING DOCUMENTS ANYMORE!🔥 <br />
+          Document summarizer creates a mindmap from your uploaded files
+          ╰(*°▽°*)╯
+        </Typography>
+        <Typography variant="body2">
+          Click "Choose Files" to select the files you want to upload. You can
+          select up to 10 files with the following formats: .pdf, .txt, .docx,
+          .rtf.
+        </Typography>
+      </Box>
+    );
   };
 
   const onFileChange = (event) => {

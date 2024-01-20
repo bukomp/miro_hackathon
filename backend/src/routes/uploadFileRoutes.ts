@@ -35,10 +35,13 @@ router.post('/uploadFile', upload.array('files', 10), async (req, res) => {
       })
 
       combinedText += text + '\n'
-
+    
       // Delete the file after processing
       await fsp.unlink(file.path)
     }
+
+    // Log the combined text and keywords to the console
+    console.log(req.body.keywords);
     console.log(combinedText)
     res.send({ combinedText: combinedText })
   } catch (error) {

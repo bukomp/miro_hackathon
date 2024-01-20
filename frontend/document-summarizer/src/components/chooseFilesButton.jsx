@@ -3,6 +3,8 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { styled } from '@mui/material/styles';
 import axios from 'axios';
 
@@ -10,22 +12,45 @@ const Input = styled('input')({
   display: 'none',
 });
 
+const FileName = styled(Typography)(({ theme }) => ({
+  maxWidth: '230px',
+  wordBreak: 'break-word',
+}));
+
+const FileDetailsPaper = styled(Paper)({
+  backgroundColor: '#f5f5f5',
+  marginTop: '8px',
+  padding: '10px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  gap: '10px',
+});
+
 const FileUploadButton = () => {
   const [selectedFiles, setSelectedFiles] = useState([]);
+
+  const handleFileDelete = (index) => {
+    const newFiles = selectedFiles.filter((_, i) => i !== index);
+    setSelectedFiles(newFiles);
+  };
 
   const fileData = () => {
     return selectedFiles.length > 0 ? (
       <Box sx={{ mt: 2, p: 2, border: '1px dashed grey' }}>
         <Typography variant="h6" gutterBottom>
-          File Details:
+          Uploaded files:
         </Typography>
         {selectedFiles.map((file, index) => (
-          <Box key={index}>
-            <Typography variant="body1">File Name: {file.name}</Typography>
-            <Typography variant="body1">
-              Last Modified: {file.lastModifiedDate.toDateString()}
-            </Typography>
-          </Box>
+          <FileDetailsPaper key={index} elevation={2}>
+            <FileName variant="body2">{file.name}</FileName>
+            <IconButton
+              aria-label="delete"
+              onClick={() => handleFileDelete(index)}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </FileDetailsPaper>
         ))}
         <Button
           variant="contained"
@@ -41,7 +66,7 @@ const FileUploadButton = () => {
   };
 
   const onFileChange = (event) => {
-    setSelectedFiles(Array.from(event.target.files));
+    setSelectedFiles([...selectedFiles, ...Array.from(event.target.files)]);
   };
 
   const onFileUpload = async () => {

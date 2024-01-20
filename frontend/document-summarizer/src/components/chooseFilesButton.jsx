@@ -90,45 +90,46 @@ const FileUploadButton = () => {
   return (
     <div
       style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
         padding: '20px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
       }}
     >
-      <label
-        htmlFor="fileInput"
-        style={{ display: 'flex', alignItems: 'center' }}
+      <div
+        style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}
       >
-        <Input
-          accept="*"
-          id="fileInput"
-          type="file"
-          multiple
-          onChange={onFileChange}
-        />
-        <Button
-          variant="contained"
-          color="secondary"
-          component="span"
-          size="large" // Makes the button larger
-          style={{
-            minWidth: '200px', // Adjust width as needed
-            padding: '10px 30px', // Adjust padding for a bigger button size
-          }}
+        <label htmlFor="fileInput" style={{ marginRight: '10px' }}>
+          <Input
+            accept="*"
+            id="fileInput"
+            type="file"
+            multiple
+            onChange={onFileChange}
+          />
+          <Button
+            variant="contained"
+            color="secondary"
+            component="span"
+            size="large"
+            style={{
+              minWidth: '200px',
+              padding: '10px 30px',
+            }}
+          >
+            Choose Files
+          </Button>
+        </label>
+        <Tooltip
+          title="Select files to upload. Multiple files can be chosen."
+          placement="top"
+          arrow
         >
-          Choose Files
-        </Button>
-      </label>
-      <Tooltip
-        title="Choose files to upload. Multiple files can be chosen. :)"
-        placement="top"
-        arrow
-      >
-        <IconButton>
-          <HelpOutlineIcon color="action" />
-        </IconButton>
-      </Tooltip>
+          <IconButton>
+            <HelpOutlineIcon color="action" />
+          </IconButton>
+        </Tooltip>
+      </div>
       {fileData()}
     </div>
   );

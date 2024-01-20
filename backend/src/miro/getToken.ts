@@ -4,6 +4,7 @@ import axios from "axios";
 export async function grabToken(req: any, res: any): Promise<any> {
   let access_token: string;
   let refresh_token: string;
+  console.log(req.query.code);
 
   if (req.query.code) {
     // #3:

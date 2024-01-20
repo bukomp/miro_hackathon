@@ -1,5 +1,4 @@
 import { createMindMapNode } from "./miro/mindMapper2";
-import { mindMap } from "./miro/mindMapper";
 import axios from "axios";
 import express from "express";
 import { getEnvOrDefault, getEnvOrThrow } from "./utils/config";
@@ -12,26 +11,25 @@ app.get("/", async (req, res) => {
   const token = getEnvOrDefault("TEMPTOKEN", "");
 
   if (token != "") {
-    await createMindMapNode(token);
-    res.send(201);
+    const node = await createMindMapNode(
+      token,
+      "parent test123",
+      getEnvOrThrow("MIRO_BOARD_ID"),
+      "3458764576268498045"
+    );
+    console.log(node);
+
+    res.sendStatus(201);
   } else {
-    console.log(await grabToken(req, res));
+    await grabToken(req, res);
   }
 });
 
 app.get("/auth/miro/callback", async (req, res) => {
-  console.log(req.query.code);
-  const token = getEnvOrDefault("TEMPTOKEN", "");
-  console.log("token", token);
-
-  if (token != "") {
-    await createMindMapNode(token);
-  } else {
-    const accessToken = await grabToken(req, res);
-  }
   //await mindMap(accessToken);
+  await grabToken(req, res);
 
-  //res.send(200);
+  res.sendStatus(200);
 });
 
 app.listen(+getEnvOrDefault("PORT", "3000"), () =>

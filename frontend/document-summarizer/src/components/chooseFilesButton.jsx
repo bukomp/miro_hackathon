@@ -9,7 +9,7 @@ import Tooltip from '@mui/material/Tooltip';
 import TextField from '@mui/material/TextField';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { styled } from '@mui/material/styles';
-import axios from 'axios';
+import uploadFiles from '../services/fileService';
 
 const Input = styled('input')({
   display: 'none',
@@ -84,7 +84,7 @@ const FileUploadButton = () => {
         <Button
           variant="contained"
           color="primary"
-          onClick={onFileUpload}
+          onClick={() => uploadFiles(selectedFiles, keyWords)}
           size="small"
           sx={{ width: '70%' }}
         >
@@ -126,24 +126,6 @@ const FileUploadButton = () => {
       ...Array.from(event.target.files),
     ].slice(0, 10);
     setSelectedFiles(newFilesArray);
-  };
-
-  const onFileUpload = async () => {
-    const formData = new FormData();
-    selectedFiles.forEach((file) => {
-      formData.append('myFiles', file, file.name);
-    });
-
-    // Log files for debugging
-    for (let value of formData.values()) {
-      console.log(value);
-    }
-
-    console.log(keyWords);
-
-    // TODO: change the API call to your backend
-    const response = await axios.post('https://httpbin.org/post', formData);
-    console.log(response.data);
   };
 
   return (

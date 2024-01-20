@@ -39,36 +39,51 @@ const FileUploadButton = () => {
 
   const fileData = () => {
     return selectedFiles.length > 0 ? (
-      <Box sx={{ mt: 2, p: 2, border: '1px dashed grey' }}>
-        <Typography variant="h6" gutterBottom>
+      <>
+        <Typography variant="h6" gutterBottom sx={{ mt: 2, mb: 2 }}>
           Uploaded files:
         </Typography>
-        {selectedFiles.map((file, index) => (
-          <FileDetailsPaper key={index} elevation={2}>
-            <FileName variant="body2">{file.name}</FileName>
-            <IconButton
-              aria-label="delete"
-              onClick={() => handleFileDelete(index)}
-            >
-              <DeleteIcon />
-            </IconButton>
-          </FileDetailsPaper>
-        ))}
+        <Box
+          sx={{
+            p: 2,
+            border: '1px dashed grey',
+            maxHeight: '400px',
+            overflowY: 'auto',
+            width: '90%',
+          }}
+        >
+          {selectedFiles.map((file, index) => (
+            <FileDetailsPaper key={index} elevation={2}>
+              <FileName variant="body2">{file.name}</FileName>
+              <IconButton
+                aria-label="delete"
+                onClick={() => handleFileDelete(index)}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </FileDetailsPaper>
+          ))}
+        </Box>
         <Button
           variant="contained"
           color="primary"
           onClick={onFileUpload}
           size="small"
-          sx={{ mt: 2 }}
+          sx={{ mt: 2, width: '70%' }}
         >
           Make your life easier
         </Button>
-      </Box>
+      </>
     ) : null;
   };
 
   const onFileChange = (event) => {
-    setSelectedFiles([...selectedFiles, ...Array.from(event.target.files)]);
+    // Only 10 files
+    const newFilesArray = [
+      ...selectedFiles,
+      ...Array.from(event.target.files),
+    ].slice(0, 10);
+    setSelectedFiles(newFilesArray);
   };
 
   const onFileUpload = async () => {
@@ -90,18 +105,19 @@ const FileUploadButton = () => {
   return (
     <div
       style={{
-        padding: '20px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        width: '100%',
       }}
     >
-      <div
-        style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}
-      >
-        <label htmlFor="fileInput" style={{ marginRight: '10px' }}>
+      <div>
+        <label
+          htmlFor="fileInput"
+          style={{ marginRight: '10px', marginLeft: '50px' }}
+        >
           <Input
-            accept="*"
+            accept=".pdf,.txt,.docx,.rtf"
             id="fileInput"
             type="file"
             multiple
@@ -121,7 +137,7 @@ const FileUploadButton = () => {
           </Button>
         </label>
         <Tooltip
-          title="Select files to upload. Multiple files can be chosen."
+          title="Only PDF, TXT, DOCX, and RTF formats. Max 10 files. Multiple files can be chosen. 😊"
           placement="top"
           arrow
         >

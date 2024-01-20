@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Tooltip from '@mui/material/Tooltip';
+import TextField from '@mui/material/TextField';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { styled } from '@mui/material/styles';
 import axios from 'axios';
@@ -31,10 +32,15 @@ const FileDetailsPaper = styled(Paper)({
 
 const FileUploadButton = () => {
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [keyWords, setKeyWords] = useState('');
 
   const handleFileDelete = (index) => {
     const newFiles = selectedFiles.filter((_, i) => i !== index);
     setSelectedFiles(newFiles);
+  };
+
+  const handleKeyNotesChange = (event) => {
+    setKeyWords(event.target.value);
   };
 
   const fileData = () => {
@@ -47,7 +53,7 @@ const FileUploadButton = () => {
           sx={{
             p: 2,
             border: '1px dashed grey',
-            maxHeight: '400px',
+            maxHeight: '300px',
             overflowY: 'auto',
             width: '90%',
           }}
@@ -64,12 +70,23 @@ const FileUploadButton = () => {
             </FileDetailsPaper>
           ))}
         </Box>
+
+        <TextField
+          label="Keywords"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          value={keyWords}
+          onChange={handleKeyNotesChange}
+          helperText="Enter keywords you want the mindmap to concentrate on."
+          sx={{ width: '90%', marginTop: '30px' }}
+        />
         <Button
           variant="contained"
           color="primary"
           onClick={onFileUpload}
           size="small"
-          sx={{ mt: 2, width: '70%' }}
+          sx={{ width: '70%' }}
         >
           Make your life easier
         </Button>
@@ -121,6 +138,8 @@ const FileUploadButton = () => {
     for (let value of formData.values()) {
       console.log(value);
     }
+
+    console.log(keyWords);
 
     // TODO: change the API call to your backend
     const response = await axios.post('https://httpbin.org/post', formData);

@@ -37,7 +37,7 @@ export const getEnvOrThrow = (key: string): string => {
  * @return {string} the value of the specified environment variable, or the
  * default value if the variable is not set
  */
-export const getEnvOrDefault = (key: string, defaultValue: string): string => {
+export const getEnvOrDefault = (key: string, defaultValue: any): string => {
   const value = getEnv(key);
   if (!value) {
     return defaultValue;
@@ -48,7 +48,7 @@ export const getEnvOrDefault = (key: string, defaultValue: string): string => {
 // ****** AI API config *******
 
 export const AIConfig: AIConfiguration = {
-  baseURL: getEnvOrThrow('AI_BASE_URL'),
+  baseURL: getEnvOrDefault('AI_BASE_URL', undefined),
   apiKey: getEnvOrThrow('AI_API_KEY'),
   organization: getEnvOrThrow('AI_ORGANIZATION'),
 };

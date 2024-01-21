@@ -3,6 +3,7 @@ import upload from '../middleware/uploadFileMiddleware';
 import textract from 'textract';
 import fs from 'fs'; // For synchronous operations
 import fsp from 'fs/promises'; // For asynchronous operations
+import { getAIMindMap } from '../AI-integration/ai-main';
 
 const router = express.Router();
 
@@ -26,7 +27,7 @@ router.post('/uploadFile', upload.array('files', 10), async (req, res) => {
       const text = await new Promise((resolve, reject) => {
         const options = {
           preserveLineBreaks: true,
-          encoding: 'UTF-8'
+          encoding: 'UTF-8',
         };
         textract.fromFileWithPath(file.path, options, (error, text) => {
           if (error) reject(error);
@@ -41,8 +42,10 @@ router.post('/uploadFile', upload.array('files', 10), async (req, res) => {
     }
 
     // Log the combined text and keywords to the console
-    console.log(req.body.keywords);
+    const assistingPrompt = req.body.keywords;
+    console.log(assistingPrompt);
     console.log(combinedText);
+    const mindMapJSON = await getAIMindMap(combinedText, assistingPrompt);
     res.send({ combinedText: combinedText });
   } catch (error) {
     if (error instanceof Error) {

@@ -7,7 +7,7 @@ import { structurizeWithAI } from './components/ai-structurizer';
 
 export const openai = new OpenAI(AIConfig);
 
-export const getAISummary = async (
+export const getAIMindMap = async (
   fileContents: string,
   assistingPrompt: string
 ): Promise<MindMapNode> => {
@@ -16,10 +16,14 @@ export const getAISummary = async (
     analyzedData = await analyzeWithAI(fileContents, assistingPrompt);
   }
 
+  console.log('\nANALYSIS:', analyzedData);
+
   let summary;
   while (!summary) {
     summary = await summarizeWithAI(fileContents, analyzedData);
   }
+
+  console.log('\nSUMMARY:', summary);
 
   const structurizedData: MindMapNode = await structurizeWithAI(
     fileContents,

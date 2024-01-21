@@ -10,7 +10,11 @@ export const analyzeWithAI = async (
 ) => {
   const messages: ChatCompletionMessageParam[] = [
     ...contextDivider(fileContents, analyzerModelSystemCard.context_length),
-    { role: 'user', content: assistingPrompt },
+    {
+      role: 'user',
+      content:
+        assistingPrompt || 'Make sure to analyze the content of the document',
+    },
     { role: 'system', content: analyzerModelSystemCard.prompt },
     { role: 'user', content: 'Now analyze the content of the document!' },
   ];

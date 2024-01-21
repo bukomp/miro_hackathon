@@ -15,7 +15,12 @@ export const structurizeWithAI = async (
     ...contextDivider(fileContents, structurizerModelSystemCard.context_length),
     { role: 'user', content: analyzedData },
     { role: 'user', content: summarizedData },
-    { role: 'user', content: assistingPrompt },
+    {
+      role: 'user',
+      content:
+        assistingPrompt ||
+        'Make sure to structurize the content of the document.',
+    },
     { role: 'system', content: structurizerModelSystemCard.prompt },
     {
       role: 'user',
@@ -30,25 +35,15 @@ export const structurizeWithAI = async (
     messages,
   });
 
-  response = await responseReStructurizer(response);
-
-  return JSON.parse(
-    trimJSONOut(
-      response.choices[response.choices.length - 1].message.content as string
-    )
+  console.log(
+    'is JSON:',
+    validateStringIsOfJSONFormat(
+      response.choices[response.choices.length - 1].message.content
+    ),
+    '\nStructurizing:',
+    response.choices[response.choices.length - 1].message.content
   );
-};
 
-const validateStringIsOfJSONFormat = (str: string) => {
-  try {
-    JSON.parse(trimJSONOut(str));
-    return true;
-  } catch (e) {
-    return false;
-  }
-};
-
-const responseReStructurizer = async (response: any) => {
   while (
     !validateStringIsOfJSONFormat(
       response.choices[response.choices.length - 1].message.content as string
@@ -67,10 +62,42 @@ const responseReStructurizer = async (response: any) => {
         },
       ],
     });
+
+    console.log(
+      'is JSON:',
+      validateStringIsOfJSONFormat(
+        response.choices[response.choices.length - 1].message.content
+      ),
+      '\nStructurizing:',
+      response.choices[response.choices.length - 1].message.content
+    );
   }
-  return response;
+
+  return JSON.parse(
+    trimJSONOut(
+      response.choices[response.choices.length - 1].message.content as string
+    )
+  );
+};
+
+const validateStringIsOfJSONFormat = (str: string | null) => {
+  try {
+    if (!str) return false;
+    JSON.parse(trimJSONOut(str));
+    return true;
+  } catch (e) {
+    return false;
+  }
 };
 
 const trimJSONOut = (str: string) => {
-  return str.substring(str.indexOf('{') + 1, str.lastIndexOf('}') - 1);
+  const startIndex = str.indexOf('{');
+  const endIndex = str.lastIndexOf('}');
+
+  if (startIndex === -1 || endIndex === -1 || endIndex < startIndex) {
+    // Return an error message or handle the case where no valid JSON is found
+    return 'No valid JSON found in the string';
+  }
+
+  return str.substring(startIndex, endIndex + 1);
 };

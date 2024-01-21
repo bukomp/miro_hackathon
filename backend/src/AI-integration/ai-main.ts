@@ -33,12 +33,5 @@ export const getAIMindMap = async (
     assistingPrompt
   );
 
-  const expandedStructurizedData = await expandContentWithAI(
-    fileContents,
-    structurizedData
-  );
-
-  console.log(String(expandedStructurizedData));
-
-  return expandedStructurizedData;
+  return structurizedData;
 };

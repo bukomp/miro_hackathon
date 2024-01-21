@@ -51,25 +51,9 @@ interface NodeSize {
 
 const getNodeSizeBasedOnContent = (content: string) => {
   let size: NodeSize = {
-    height: Math.max(content.length * 1.2, 50),
-    width: Math.max(content.length * 2.4, 100),
+    height: Math.max(content.length * 1.2, 100),
+    width: Math.max(content.length * 2.4, 200),
   };
-
-  // special case for small nodes
-  if (content.length < 50) {
-    size = {
-      height: 70,
-      width: 100,
-    };
-  }
-
-  // special case for small nodes
-  if (content.length < 20) {
-    size = {
-      height: 50,
-      width: 100,
-    };
-  }
 
   return size;
 };
@@ -125,7 +109,7 @@ const getNodeOptionsWithParent = (
 // Constants for layout
 const rootX = -5000; // X coordinate of the root node
 const rootY = -5000; // Y coordinate of the root node
-const spacing = 600; // Spacing between levels
+const spacing = 300; // Spacing between levels
 
 export const processFlowchartNode = async (
   node: MindMapNode,

@@ -1,6 +1,6 @@
-import { MindMapNode } from "../utils/node";
+import { MindMapNode } from '../interfaces/MindMapNode.interface';
 
-const sdk = require("api")("@miro-ea/v2.0#3on7qglqcdtn73");
+const sdk = require('api')('@miro-ea/v2.0#3on7qglqcdtn73');
 
 /**
  * Creates a mind map node.
@@ -24,7 +24,7 @@ export const createMindMapNode = async (
   } else if (parentId != null) {
     data = getNodeOptionsWithParent(nodeText, boardId, parentId, xPos, yPos);
   }
-  console.log("DATA", data);
+  console.log('DATA', data);
 
   const node = await sdk
     .createMindmapNodesExperimental(data[0], data[1])
@@ -45,12 +45,12 @@ const getNodeOptions = (
     {
       data: {
         nodeView: {
-          data: { type: "text", content: nodeText }
-        }
+          data: { type: 'text', content: nodeText },
+        },
       },
-      position: { x: xPos, y: yPos }
+      position: { x: xPos, y: yPos },
     },
-    { board_id: boardId }
+    { board_id: boardId },
   ];
 };
 
@@ -65,13 +65,13 @@ const getNodeOptionsWithParent = (
     {
       data: {
         nodeView: {
-          data: { type: "text", content: nodeText }
-        }
+          data: { type: 'text', content: nodeText },
+        },
       },
       position: { x: xPos, y: yPos },
-      parent: { id: parentId }
+      parent: { id: parentId },
     },
-    { board_id: boardId }
+    { board_id: boardId },
   ];
 };
 

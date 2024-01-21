@@ -1,6 +1,6 @@
-import { MindMapNode } from "../utils/node";
+import { MindMapNode } from '../interfaces/MindMapNode.interface';
 
-const sdk = require("api")("@miro-ea/v2.0#3on7qglqcdtn73");
+const sdk = require('api')('@miro-ea/v2.0#3on7qglqcdtn73');
 
 /**
  * Creates a mind map node.
@@ -45,11 +45,11 @@ const getNodeOptions = (
     {
       data: {
         content: nodeText,
-        shape: "rectangle"
+        shape: 'rectangle',
       },
-      position: { x: xPos, y: yPos }
+      position: { x: xPos, y: yPos },
     },
-    { board_id: boardId }
+    { board_id: boardId },
   ];
 };
 
@@ -64,12 +64,12 @@ const getNodeOptionsWithParent = (
     {
       data: {
         content: nodeText,
-        shape: "round_rectangle"
+        shape: 'round_rectangle',
       },
       position: { x: xPos, y: yPos },
-      parent: { id: parentId }
+      parent: { id: parentId },
     },
-    { board_id: boardId }
+    { board_id: boardId },
   ];
 };
 
@@ -133,7 +133,7 @@ export const processAndAccumulateNodes = async (
 ): Promise<MindMapNode[]> => {
   const nodes: MindMapNode[] = [];
   const stack: MindMapNode[] = [
-    await processFlowchartNode(rootNode, accessToken, boardId, 0, 0)
+    await processFlowchartNode(rootNode, accessToken, boardId, 0, 0),
   ];
 
   while (stack.length > 0) {

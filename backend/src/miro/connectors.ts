@@ -1,6 +1,6 @@
-import { MindMapNode } from "../utils/node";
+import { MindMapNode } from '../interfaces/MindMapNode.interface';
 
-const sdk = require("api")("@miro-ea/v2.0#a81qse1nlraisyc5");
+const sdk = require('api')('@miro-ea/v2.0#a81qse1nlraisyc5');
 
 /**
  *
@@ -45,14 +45,14 @@ const getNodeOptions = (
     {
       startItem: {
         id: startItem,
-        snapTo: "auto"
+        snapTo: 'auto',
       },
       endItem: {
         id: endItem,
-        snapTo: "auto"
-      }
+        snapTo: 'auto',
+      },
     },
-    { board_id: boardId }
+    { board_id: boardId },
   ];
 };
 
@@ -62,7 +62,7 @@ export const createConnectors = async (
   boardId: string
 ) => {
   const connectors: any[] = [];
-  data.forEach(async pair => {
+  data.forEach(async (pair) => {
     const newConnector = await createConnector(
       accessToken,
       boardId,
@@ -84,7 +84,7 @@ export const createIdPairs = (nodes: MindMapNode[]): NodePair[] => {
   const pairs: NodePair[] = [];
 
   const addPairsFromNode = (node: MindMapNode) => {
-    node.children.forEach(child => {
+    node.children.forEach((child) => {
       pairs.push({ startId: node.id, endId: child.id });
       addPairsFromNode(child); // Recursively add pairs for children
     });

@@ -1,6 +1,11 @@
 # Document summarizer
 
 
+## Development env guide
+
+-  ```npm i``` in both src/backend and src/frontend
+-  ```npm start``` in both src/backend and src/frontend
+
 
 | Key                | Default Value |
 |--------------------|-------|

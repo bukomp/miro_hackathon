@@ -3,8 +3,8 @@
 
 ## Development env guide
 
--  ```npm i``` in both src/backend and src/frontend
--  ```npm start``` in both src/backend and src/frontend
+-  ```npm i``` in both ./backend and ./frontend
+-  ```npm start``` in both ./backend and ./frontend
 
 
 | Key                | Default Value |

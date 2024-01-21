@@ -1,7 +1,7 @@
 import { MindMapNode } from "./node";
 
 export const mockData: MindMapNode = {
-  content: "Root Node",
+  content: "Root Node Root Node node",
   children: [
     {
       content: "Child Node 1",
@@ -23,7 +23,8 @@ export const mockData: MindMapNode = {
           content: "Grandchild Node 3",
           children: [
             {
-              content: "Great-Grandchild Node 1",
+              content:
+                "Great-Grandchild Node 1Great-Grandchild Node 1Great-Grandchild Node 1Great-Grandchild Node 1Great-Grandchild Node 1",
               children: [] // This node has no children
             }
           ]

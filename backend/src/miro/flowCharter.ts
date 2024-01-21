@@ -13,17 +13,26 @@ export const createFlowchartNode = async (
   accessToken: string,
   nodeText: string,
   boardId: string,
+  borderOpacity: number,
   parentId?: string,
   xPos: number = 0,
   yPos: number = 0
 ) => {
   sdk.auth(accessToken);
   let data: any[] = [];
-  if (!parentId) {
-    data = getNodeOptions(nodeText, boardId, xPos, yPos);
-  } else if (parentId != null) {
-    data = getNodeOptionsWithParent(nodeText, boardId, parentId, xPos, yPos);
-  }
+  //console.log("borderOpacity: ", borderOpacity);
+
+  const { height, width } = getNodeSizeBasedOnContent(nodeText);
+  data = getNodeOptions(
+    nodeText,
+    boardId,
+    xPos,
+    yPos,
+    borderOpacity,
+    height,
+    width
+  );
+
   //console.log("DATA", data);
 
   const node = await sdk
@@ -35,19 +44,59 @@ export const createFlowchartNode = async (
   return node;
 };
 
+interface NodeSize {
+  height: number;
+  width: number;
+}
+
+const getNodeSizeBasedOnContent = (content: string) => {
+  let size: NodeSize = {
+    height: Math.max(content.length * 1.2, 50),
+    width: Math.max(content.length * 3, 100)
+  };
+
+  // special case for small nodes
+  if (content.length < 50) {
+    size = {
+      height: 70,
+      width: 100
+    };
+  }
+
+  // special case for small nodes
+  if (content.length < 20) {
+    size = {
+      height: 50,
+      width: 100
+    };
+  }
+
+  return size;
+};
+
 const getNodeOptions = (
   nodeText: string,
   boardId: string,
   xPos: number,
-  yPos: number
+  yPos: number,
+  borderOpacity: number,
+  height: number,
+  width: number
 ) => {
   return [
     {
       data: {
         content: nodeText,
-        shape: "rectangle"
+        shape: "round_rectangle"
       },
-      position: { x: xPos, y: yPos }
+      style: {
+        borderOpacity: borderOpacity,
+        borderColor: "#1a1a1a",
+        textAlign: "center",
+        textAlignVertical: "middle"
+      },
+      position: { x: xPos, y: yPos },
+      geometry: { height: height, width: width }
     },
     { board_id: boardId }
   ];
@@ -76,7 +125,7 @@ const getNodeOptionsWithParent = (
 // Constants for layout
 const rootX = 1000; // X coordinate of the root node
 const rootY = 1000; // Y coordinate of the root node
-const spacing = 100; // Spacing between levels
+const spacing = 200; // Spacing between levels
 
 export const processFlowchartNode = async (
   node: MindMapNode,
@@ -92,14 +141,28 @@ export const processFlowchartNode = async (
   node.x = rootX + level * spacing * Math.cos(angle);
   node.y = rootY + level * spacing * Math.sin(angle);
 
-  newNode = await createFlowchartNode(
-    accessToken,
-    node.content,
-    boardId,
-    undefined,
-    Math.round(node.x),
-    Math.round(node.y)
-  );
+  // call api; for root node set opacity to 1, others 0
+  if (!parentId) {
+    newNode = await createFlowchartNode(
+      accessToken,
+      node.content,
+      boardId,
+      1,
+      undefined,
+      Math.round(node.x),
+      Math.round(node.y)
+    );
+  } else {
+    newNode = await createFlowchartNode(
+      accessToken,
+      node.content,
+      boardId,
+      0,
+      undefined,
+      Math.round(node.x),
+      Math.round(node.y)
+    );
+  }
 
   node.id = newNode.id;
 

@@ -1,4 +1,4 @@
-import { MindMapNode } from "../utils/node";
+import { MindMapNode } from "../interfaces/MindMapNode.interface";
 
 const sdk = require("api")("@miro-ea/v2.0#3on7qglqcdtn73");
 

@@ -1,4 +1,4 @@
-import { MindMapNode } from "./node";
+import { MindMapNode } from "../interfaces/MindMapNode.interface";
 
 export const mockData: MindMapNode = {
   content: "Root Node Root Node node",

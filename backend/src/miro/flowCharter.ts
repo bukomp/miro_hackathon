@@ -123,8 +123,8 @@ const getNodeOptionsWithParent = (
 };
 
 // Constants for layout
-const rootX = 1000; // X coordinate of the root node
-const rootY = 1000; // Y coordinate of the root node
+const rootX = -5000; // X coordinate of the root node
+const rootY = -5000; // Y coordinate of the root node
 const spacing = 200; // Spacing between levels
 
 export const processFlowchartNode = async (
@@ -133,13 +133,21 @@ export const processFlowchartNode = async (
   boardId: string,
   angle: number,
   level: number,
-  parentId?: string
+  parentId?: string,
+  parentX?: number,
+  parentY?: number
 ) => {
   let newNode: MindMapNode;
 
+  const { height, width } = getNodeSizeBasedOnContent(node.content);
   // Assign coordinates based on angle and level
-  node.x = rootX + level * spacing * Math.cos(angle);
-  node.y = rootY + level * spacing * Math.sin(angle);
+  if (parentX && parentY) {
+    node.x = parentX + level * spacing * Math.cos(angle);
+    node.y = parentY + level * spacing * Math.sin(angle) * 0.7;
+  } else {
+    node.x = rootX + level * spacing * Math.cos(angle);
+    node.y = rootY + level * spacing * Math.sin(angle);
+  }
 
   // call api; for root node set opacity to 1, others 0
   if (!parentId) {
@@ -173,14 +181,20 @@ export const processFlowchartNode = async (
   await Promise.all(
     node.children.map((childNode, i) => {
       // Calculate angle for each child
-      const childAngle = baseAngle + ((2 * Math.PI) / childCount) * i;
+      let childAngle: number;
+      if (!parentId) {
+        childAngle = baseAngle + ((2 * Math.PI) / childCount) * i;
+      } else childAngle = baseAngle + (4 / Math.PI / childCount) * i;
+
       return processFlowchartNode(
         childNode,
         accessToken,
         boardId,
         childAngle,
         level + 1,
-        node.id
+        node.id,
+        node.x,
+        node.y
       );
     })
   );

@@ -1,6 +1,6 @@
-import { MindMapNode } from "../interfaces/MindMapNode.interface";
+import { MindMapNode } from '../interfaces/MindMapNode.interface';
 
-const sdk = require("api")("@miro-ea/v2.0#3on7qglqcdtn73");
+const sdk = require('api')('@miro-ea/v2.0#3on7qglqcdtn73');
 
 /**
  * Creates a mind map node.
@@ -52,14 +52,14 @@ interface NodeSize {
 const getNodeSizeBasedOnContent = (content: string) => {
   let size: NodeSize = {
     height: Math.max(content.length * 1.2, 50),
-    width: Math.max(content.length * 3, 100)
+    width: Math.max(content.length * 2.4, 100),
   };
 
   // special case for small nodes
   if (content.length < 50) {
     size = {
       height: 70,
-      width: 100
+      width: 100,
     };
   }
 
@@ -67,7 +67,7 @@ const getNodeSizeBasedOnContent = (content: string) => {
   if (content.length < 20) {
     size = {
       height: 50,
-      width: 100
+      width: 100,
     };
   }
 
@@ -87,18 +87,18 @@ const getNodeOptions = (
     {
       data: {
         content: nodeText,
-        shape: "round_rectangle"
+        shape: 'round_rectangle',
       },
       style: {
         borderOpacity: borderOpacity,
-        borderColor: "#1a1a1a",
-        textAlign: "center",
-        textAlignVertical: "middle"
+        borderColor: '#1a1a1a',
+        textAlign: 'center',
+        textAlignVertical: 'middle',
       },
       position: { x: xPos, y: yPos },
-      geometry: { height: height, width: width }
+      geometry: { height: height, width: width },
     },
-    { board_id: boardId }
+    { board_id: boardId },
   ];
 };
 
@@ -113,19 +113,19 @@ const getNodeOptionsWithParent = (
     {
       data: {
         content: nodeText,
-        shape: "round_rectangle"
+        shape: 'round_rectangle',
       },
       position: { x: xPos, y: yPos },
-      parent: { id: parentId }
+      parent: { id: parentId },
     },
-    { board_id: boardId }
+    { board_id: boardId },
   ];
 };
 
 // Constants for layout
 const rootX = 1000; // X coordinate of the root node
 const rootY = 1000; // Y coordinate of the root node
-const spacing = 200; // Spacing between levels
+const spacing = 400; // Spacing between levels
 
 export const processFlowchartNode = async (
   node: MindMapNode,
@@ -196,7 +196,7 @@ export const processAndAccumulateNodes = async (
 ): Promise<MindMapNode[]> => {
   const nodes: MindMapNode[] = [];
   const stack: MindMapNode[] = [
-    await processFlowchartNode(rootNode, accessToken, boardId, 0, 0)
+    await processFlowchartNode(rootNode, accessToken, boardId, 0, 0),
   ];
 
   while (stack.length > 0) {

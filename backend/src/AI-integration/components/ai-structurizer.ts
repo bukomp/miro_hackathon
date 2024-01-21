@@ -35,15 +35,6 @@ export const structurizeWithAI = async (
     messages,
   });
 
-  console.log(
-    'is JSON:',
-    validateStringIsOfJSONFormat(
-      response.choices[response.choices.length - 1].message.content
-    ),
-    '\nStructurizing:',
-    response.choices[response.choices.length - 1].message.content
-  );
-
   while (
     !validateStringIsOfJSONFormat(
       response.choices[response.choices.length - 1].message.content as string
@@ -62,15 +53,6 @@ export const structurizeWithAI = async (
         },
       ],
     });
-
-    console.log(
-      'is JSON:',
-      validateStringIsOfJSONFormat(
-        response.choices[response.choices.length - 1].message.content
-      ),
-      '\nStructurizing:',
-      response.choices[response.choices.length - 1].message.content
-    );
   }
 
   return JSON.parse(

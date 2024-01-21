@@ -49,8 +49,10 @@ router.post('/uploadFile', upload.array('files', 10), async (req, res) => {
 
     // Log the combined text and keywords to the console
     const assistingPrompt = req.body.keywords;
+
     console.log(assistingPrompt);
     console.log(combinedText);
+
     const mindMapJSON = await getAIMindMap(combinedText, assistingPrompt);
 
     const nodes = await processAndAccumulateNodes(

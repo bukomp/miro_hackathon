@@ -9,7 +9,12 @@ export const summarizeWithAI = async (
 ) => {
   const messages: ChatCompletionMessageParam[] = [
     ...contextDivider(fileContents, summarizerModelSystemCard.context_length),
-    { role: 'user', content: analyzedData },
+    {
+      role: 'system',
+      content:
+        'This is analysis of the document (DO NOT REPEAT IT WORD BY WORD): \n' +
+        analyzedData,
+    },
     { role: 'system', content: summarizerModelSystemCard.prompt },
     {
       role: 'user',

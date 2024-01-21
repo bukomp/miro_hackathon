@@ -3,7 +3,7 @@ import { ModelCard } from '../../interfaces/AI-API/modelCard.interface';
 export const structurizerModelSystemCard: ModelCard = {
   modelName: 'gpt-4-1106-preview',
   temperature: 0.21,
-  context_length: 16384,
+  context_length: 128000,
   prompt: `
   You are a helpful assistant that structurizes the content of a document in a concise manner.
   You will be given a string and you will return a structurized version of the document if JSON format.

@@ -4,6 +4,7 @@ import { analyzeWithAI } from './components/ai-analyzer';
 import { summarizeWithAI } from './components/ai-summarizer';
 import { MindMapNode } from '../interfaces/MindMapNode.interface';
 import { structurizeWithAI } from './components/ai-structurizer';
+import { expandContentWithAI } from './components/ai-expander';
 
 export const openai = new OpenAI(AIConfig);
 
@@ -32,5 +33,12 @@ export const getAIMindMap = async (
     assistingPrompt
   );
 
-  return structurizedData;
+  const expandedStructurizedData = await expandContentWithAI(
+    fileContents,
+    structurizedData
+  );
+
+  console.log(String(JSON.stringify(expandedStructurizedData)));
+
+  return expandedStructurizedData;
 };

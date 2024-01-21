@@ -1,10 +1,14 @@
+import { createConnectors, createIdPairs } from "./miro/connectors";
 import { mockData } from "./utils/mockData";
 import { createMindMapNode, processNode } from "./miro/mindMapper2";
 import axios from "axios";
 import express from "express";
 import { getEnvOrDefault, getEnvOrThrow } from "./utils/config";
 import { grabToken } from "./miro/getToken";
-import { processFlowchartNode } from "./miro/flowCharter";
+import {
+  processFlowchartNode,
+  processAndAccumulateNodes
+} from "./miro/flowCharter";
 
 const app = express();
 
@@ -54,14 +58,14 @@ app.get("/flow", async (req, res) => {
 
   if (token != "") {
     const data = mockData;
-    const response = processFlowchartNode(
+    const response = processAndAccumulateNodes(
       data,
       token,
-      getEnvOrThrow("MIRO_BOARD_ID"),
-      0,
-      0,
-      data.id
-    );
+      getEnvOrThrow("MIRO_BOARD_ID")
+    ).then(nodes => {
+      const idPairs = createIdPairs(nodes);
+      createConnectors(idPairs, token, getEnvOrThrow("MIRO_BOARD_ID"));
+    });
 
     res.sendStatus(201);
   } else {

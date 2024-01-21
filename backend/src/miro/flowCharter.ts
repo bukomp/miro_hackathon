@@ -24,7 +24,7 @@ export const createFlowchartNode = async (
   } else if (parentId != null) {
     data = getNodeOptionsWithParent(nodeText, boardId, parentId, xPos, yPos);
   }
-  console.log("DATA", data);
+  //console.log("DATA", data);
 
   const node = await sdk
     .createShapeItemFlowchart(data[0], data[1])
@@ -92,39 +92,57 @@ export const processFlowchartNode = async (
   node.x = rootX + level * spacing * Math.cos(angle);
   node.y = rootY + level * spacing * Math.sin(angle);
 
-  if (!parentId) {
-    newNode = await createFlowchartNode(
-      accessToken,
-      node.content,
-      boardId,
-      undefined,
-      Math.round(node.x),
-      Math.round(node.y)
-    );
-  } else
-    newNode = await createFlowchartNode(
-      accessToken,
-      node.content,
-      boardId,
-      parentId,
-      Math.round(node.x),
-      Math.round(node.y)
-    );
+  newNode = await createFlowchartNode(
+    accessToken,
+    node.content,
+    boardId,
+    undefined,
+    Math.round(node.x),
+    Math.round(node.y)
+  );
+
   node.id = newNode.id;
 
   // Process children nodes
   const childCount = node.children.length;
   const baseAngle = angle + Math.PI / 4; // Adjust base angle for each level
 
-  for (let i = 0; i < childCount; i++) {
-    // Calculate angle for each child
-    const childAngle = baseAngle + ((2 * Math.PI) / childCount) * i;
-    await processFlowchartNode(
-      node.children[i],
-      accessToken,
-      boardId,
-      childAngle,
-      level + 1
-    );
+  await Promise.all(
+    node.children.map((childNode, i) => {
+      // Calculate angle for each child
+      const childAngle = baseAngle + ((2 * Math.PI) / childCount) * i;
+      return processFlowchartNode(
+        childNode,
+        accessToken,
+        boardId,
+        childAngle,
+        level + 1,
+        node.id
+      );
+    })
+  );
+
+  return node;
+};
+
+// Function to initiate the process and accumulate nodes
+export const processAndAccumulateNodes = async (
+  rootNode: MindMapNode,
+  accessToken: string,
+  boardId: string
+): Promise<MindMapNode[]> => {
+  const nodes: MindMapNode[] = [];
+  const stack: MindMapNode[] = [
+    await processFlowchartNode(rootNode, accessToken, boardId, 0, 0)
+  ];
+
+  while (stack.length > 0) {
+    const currentNode = stack.pop();
+    if (currentNode) {
+      nodes.push(currentNode);
+      stack.push(...currentNode.children);
+    }
   }
+
+  return nodes;
 };

@@ -14,7 +14,7 @@
 | MIRO_USER_ID       |       |
 | MIRO_REDIRECT_URL  |       |
 | MIRO_BOARD_ID      |       |
-| TEMPTOKEN          |       |
+| TEMPTOKEN          |    miro api access token goes here   |
 | PORT               | 3000  |
 | AI_API_KEY         |       |
 | AI_ORGANIZATION    |       |

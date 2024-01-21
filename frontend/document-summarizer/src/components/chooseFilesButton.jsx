@@ -12,12 +12,12 @@ import { styled } from '@mui/material/styles';
 import uploadFiles from '../services/fileService';
 
 const Input = styled('input')({
-  display: 'none',
+  display: 'none'
 });
 
 const FileName = styled(Typography)(({ theme }) => ({
   maxWidth: '230px',
-  wordBreak: 'break-word',
+  wordBreak: 'break-word'
 }));
 
 const FileDetailsPaper = styled(Paper)({
@@ -27,12 +27,13 @@ const FileDetailsPaper = styled(Paper)({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  gap: '10px',
+  gap: '10px'
 });
 
 const FileUploadButton = () => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [keyWords, setKeyWords] = useState('');
+  const [isUploading, setIsUploading] = useState(false);
 
   const handleFileDelete = (index) => {
     const newFiles = selectedFiles.filter((_, i) => i !== index);
@@ -41,6 +42,17 @@ const FileUploadButton = () => {
 
   const handleKeyNotesChange = (event) => {
     setKeyWords(event.target.value);
+  };
+
+  const handleUpload = async () => {
+    setIsUploading(true);
+    try {
+      await uploadFiles(selectedFiles, keyWords);
+    } catch (error) {
+      // Handle any errors here
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   const fileData = () => {
@@ -55,7 +67,7 @@ const FileUploadButton = () => {
             border: '1px dashed grey',
             maxHeight: '300px',
             overflowY: 'auto',
-            width: '90%',
+            width: '90%'
           }}
         >
           {selectedFiles.map((file, index) => (
@@ -90,6 +102,12 @@ const FileUploadButton = () => {
         >
           Make your life easier
         </Button>
+
+        {isUploading && (
+          <Typography variant="body2" color="textSecondary" sx={{ mt: 2 }}>
+            Please wait, your mindmap is brewing. This may take a few minutes.
+          </Typography>
+        )}
       </>
     ) : (
       <Box
@@ -98,7 +116,7 @@ const FileUploadButton = () => {
           p: 2,
           border: '1px dashed grey',
           width: '90%',
-          backgroundColor: '#f5f5f5',
+          backgroundColor: '#f5f5f5'
         }}
       >
         <Typography
@@ -123,7 +141,7 @@ const FileUploadButton = () => {
     // Only 10 files
     const newFilesArray = [
       ...selectedFiles,
-      ...Array.from(event.target.files),
+      ...Array.from(event.target.files)
     ].slice(0, 10);
     setSelectedFiles(newFilesArray);
   };
@@ -134,7 +152,7 @@ const FileUploadButton = () => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        width: '100%',
+        width: '100%'
       }}
     >
       <div>
@@ -156,7 +174,7 @@ const FileUploadButton = () => {
             size="large"
             style={{
               minWidth: '200px',
-              padding: '10px 30px',
+              padding: '10px 30px'
             }}
           >
             Choose Files

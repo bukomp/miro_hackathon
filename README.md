@@ -18,6 +18,7 @@
 | PORT               | 3000  |
 | AI_API_KEY         |       |
 | AI_ORGANIZATION    |       |
+| AI_BASE_URL        | UNDEFINED (so it would use OpenAI's API)      |
 
 ### backend/.env example:
 ```

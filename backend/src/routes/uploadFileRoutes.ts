@@ -23,7 +23,7 @@ router.post('/uploadFile', upload.array('files', 10), async (req, res) => {
     let combinedText = '';
 
     for (const file of req.files) {
-      const text = await new Promise((resolve, reject) => {
+      const text = await new Promise<string>((resolve, reject) => {
         const options = {
           preserveLineBreaks: true,
           encoding: 'UTF-8'
@@ -34,7 +34,16 @@ router.post('/uploadFile', upload.array('files', 10), async (req, res) => {
         });
       });
 
-      combinedText += text + '\n';
+      // Regex to identify the start of the references section
+      const referencesRegex = /(\n\d+\s+References|\nReferences)/i;
+      const parts = text.split(referencesRegex);
+
+      // If the references section is found, use only the text before it
+      if (parts.length > 1) {
+        combinedText += parts[0] + '\n';
+      } else {
+        combinedText += text + '\n';
+      }
 
       // Delete the file after processing
       await fsp.unlink(file.path);

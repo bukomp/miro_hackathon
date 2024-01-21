@@ -21,10 +21,59 @@ export const mockData: MindMapNode = {
       children: [
         {
           content: "Grandchild Node 3",
+          children: [] // This node has no children
+        },
+        {
+          content: "Grandchild Node 4",
+          children: [] // This node has no children
+        }
+      ]
+    },
+    {
+      content: "Child Node 2",
+      children: [
+        {
+          content: "Grandchild Node 3",
           children: [
             {
               content:
                 "Great-Grandchild Node 1Great-Grandchild Node 1Great-Grandchild Node 1Great-Grandchild Node 1Great-Grandchild Node 1",
+              children: [] // This node has no children
+            }
+          ]
+        }
+      ]
+    },
+    {
+      content: "Child Node 3",
+      children: [
+        {
+          content: "Grandchild Node 4",
+          children: [
+            {
+              content:
+                "Great-Grandchild Node2Great-Grandchild Node2Great-Grandchild Node2Great-Grandchild Node2Great-Grandchild Node2",
+              children: [] // This node has no children
+            },
+            {
+              content:
+                "Great-Grandchild Node2Great-Grandchild Node2Great-Grandchild Node2Great-Grandchild Node2Great-Grandchild Node2",
+              children: [] // This node has no children
+            },
+            {
+              content:
+                "Great-Grandchild Node2Great-Grandchild Node2Great-Grandchild Node2Great-Grandchild Node2Great-Grandchild Node2Great-Grandchild Node2Great-Grandchild Node2Great-Grandchild Node2Great-Grandchild Node2Great-Grandchild Node2",
+              children: [
+                {
+                  content:
+                    "Great-Grandchild Node2Great-Grandchild Node2Great-Grandchild Node2Great-Grandchild Node2Great-Grandchild Node2Great-Grandchild Node2Great-Grandchild Node2Great-Grandchild Node2Great-Grandchild Node2Great-Grandchild Node2",
+                  children: []
+                }
+              ] // This node has no children
+            },
+            {
+              content:
+                "Great-Grandchild Node2Great-Grandchild Node2Great-Grandchild Node2Great-Grandchild Node2Great-Grandchild Node2",
               children: [] // This node has no children
             }
           ]

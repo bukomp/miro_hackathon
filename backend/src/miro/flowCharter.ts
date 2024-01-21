@@ -125,7 +125,7 @@ const getNodeOptionsWithParent = (
 // Constants for layout
 const rootX = -5000; // X coordinate of the root node
 const rootY = -5000; // Y coordinate of the root node
-const spacing = 200; // Spacing between levels
+const spacing = 600; // Spacing between levels
 
 export const processFlowchartNode = async (
   node: MindMapNode,

@@ -17,6 +17,5 @@ export const contextDivider = (
   if (currentMessage) {
     messages.push({ role: 'user', content: currentMessage });
   }
-
   return messages;
 };

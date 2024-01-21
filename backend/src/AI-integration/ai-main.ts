@@ -38,7 +38,7 @@ export const getAIMindMap = async (
     structurizedData
   );
 
-  console.log(String(JSON.stringify(expandedStructurizedData)));
+  console.log(String(expandedStructurizedData));
 
   return expandedStructurizedData;
 };

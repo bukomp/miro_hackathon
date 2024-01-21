@@ -4,6 +4,12 @@ import textract from 'textract';
 import fs from 'fs'; // For synchronous operations
 import fsp from 'fs/promises'; // For asynchronous operations
 import { getAIMindMap } from '../AI-integration/ai-main';
+import {
+  processAndAccumulateNodes,
+  processFlowchartNode,
+} from '../miro/flowCharter';
+import { getEnvOrThrow } from '../utils/config';
+import { createConnectors, createIdPairs } from '../miro/connectors';
 
 const router = express.Router();
 
@@ -46,6 +52,21 @@ router.post('/uploadFile', upload.array('files', 10), async (req, res) => {
     console.log(assistingPrompt);
     console.log(combinedText);
     const mindMapJSON = await getAIMindMap(combinedText, assistingPrompt);
+
+    const nodes = await processAndAccumulateNodes(
+      mindMapJSON,
+      getEnvOrThrow('TEMPTOKEN'),
+      getEnvOrThrow('MIRO_BOARD_ID')
+    );
+
+    const idPairs = createIdPairs(nodes);
+
+    await createConnectors(
+      idPairs,
+      getEnvOrThrow('TEMPTOKEN'),
+      getEnvOrThrow('MIRO_BOARD_ID')
+    );
+
     res.send({ combinedText: combinedText });
   } catch (error) {
     if (error instanceof Error) {
